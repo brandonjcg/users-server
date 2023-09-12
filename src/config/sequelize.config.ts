@@ -15,6 +15,9 @@ const sequelize = new Sequelize(database, user, password, {
   dialect: 'mysql',
   port: Number(port),
   logging: true,
+  define: {
+    paranoid: true,
+  }
 });
 
 export default sequelize;
