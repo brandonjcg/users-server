@@ -4,8 +4,8 @@ import User from '../models/user.model';
 
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const { title, content, userId } = req.body;
-    const post = await Post.create({ title, content, userId });
+    const { title, content, idUser } = req.body;
+    const post = await Post.create({ title, content, idUser });
     res.status(201).json(post);
   } catch (error) {
     console.error(error);
@@ -48,15 +48,15 @@ export const getPostById = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { title, content, userId } = req.body;
+    
     const post = await Post.findByPk(id);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
-    post.title = title;
-    post.content = content;
-    // post.userId = userId;
-    await post.save();
+
+
+    await post.update(req.body);
+    
     res.status(200).json(post);
   } catch (error) {
     console.error(error);

@@ -40,6 +40,10 @@ class Post extends Model {
           allowNull: false,
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
+        deletedAt: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        },
         active: {
           type: DataTypes.BOOLEAN,
           allowNull: false,
