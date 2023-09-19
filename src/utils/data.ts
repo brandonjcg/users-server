@@ -1,3 +1,3 @@
 export const getModels = (
-    modelFiles: string[]
+    modelFiles: string[] = [],
 ) => modelFiles.filter((file) => file !== 'index.ts');
