@@ -1,4 +1,4 @@
-import { getModels } from '../../src/utils';
+import { getModels } from '../../utils';
 
 describe('Unit test getModels fn', () => {
     it('Should return an array of strings, without index.ts', () => {
