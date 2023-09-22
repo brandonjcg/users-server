@@ -8,7 +8,10 @@ export const createPost = async (req: Request, res: Response) => {
     const { title, content, idUser } = req.body;
     const post = await Post.create({ title, content, idUser });
 
-    return sendGenericSuccess(res, { data: post });
+    return sendGenericSuccess(res, { 
+      data: post,
+      message: 'Post created successfully',
+    });
 
   } catch (error: any) {
     return sendGenericError(res, error);
@@ -40,7 +43,7 @@ export const getPostById = async (req: Request, res: Response) => {
     if (!post) {
       return sendGenericSuccess(res, { message: 'Post not found' });
     }
-    res.status(200).json(post);
+    return sendGenericSuccess(res, { data: post });
   } catch (error: any) {
     return sendGenericError(res, error);
   }
@@ -58,7 +61,10 @@ export const updatePost = async (req: Request, res: Response) => {
 
     await post.update(req.body);
     
-    return sendGenericSuccess(res, { data: post });
+    return sendGenericSuccess(res, {
+      data: post,
+      message: 'Post updated successfully',
+    });
   } catch (error: any) {
     return sendGenericError(res, error);
   }
@@ -74,7 +80,10 @@ export const deletePost = async (req: Request, res: Response) => {
 
     await post.destroy();
     
-    return sendGenericSuccess(res, { data: post });
+    return sendGenericSuccess(res, {
+      data: post,
+      message: 'Post deleted successfully',
+    });
   } catch (error: any) {
     return sendGenericError(res, error);
   }

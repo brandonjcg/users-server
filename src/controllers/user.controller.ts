@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Post from '../models/post.model';
 import User from '../models/user.model';
-import { sendGenericError, sendGenericSuccess } from '../utils/response';
+import { sendGenericError, sendGenericSuccess } from '../utils';
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -45,7 +45,10 @@ export const createUser = async (
   try {
     const user = await User.create({ name, email });
     
-    return sendGenericSuccess(res, { data: user });
+    return sendGenericSuccess(res, { 
+      data: user,
+      message: 'User created successfully',
+    });
   } catch (error: any) {
     return sendGenericError(res, error);
   }
@@ -65,7 +68,10 @@ export const updateUser = async (
     
     await user.update(req.body);
     
-    return sendGenericSuccess(res, { data: user });
+    return sendGenericSuccess(res, { 
+      data: user,
+      message: 'User updated successfully',
+    });
   } catch (error: any) {
     return sendGenericError(res, error);
   }
@@ -82,7 +88,11 @@ export const deleteUser = async (
       return sendGenericSuccess(res, { message: 'User not found' });
     }
     await user.destroy();
-    return sendGenericSuccess(res, { data: user });
+    
+    return sendGenericSuccess(res, { 
+      data: user,
+      message: 'User deleted successfully',
+    });
   } catch (error: any) {
     return sendGenericError(res, error);
   }
