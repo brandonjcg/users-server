@@ -1,13 +1,19 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
-import sequelize from '../config/sequelize.config';
+import sequelizeConfig from '../config/sequelize.config';
 
 class Post extends Model {
   public id!: number;
+
   public title!: string;
+
   public content!: string;
+
   public idUser!: number;
+
   public active!: boolean;
+
   public readonly createdAt!: Date;
+
   public readonly updatedAt!: Date;
 
   static initialize(sequelize: Sequelize) {
@@ -67,6 +73,6 @@ class Post extends Model {
   }
 }
 
-Post.initialize(sequelize);
+Post.initialize(sequelizeConfig);
 
 export default Post;
