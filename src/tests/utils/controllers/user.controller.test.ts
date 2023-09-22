@@ -1,5 +1,7 @@
-import { mockRequest, mockResponse } from "jest-mock-req-res";
-import { createUser, deleteUser, getUserById, getUsers, updateUser } from "../../../controllers/user.controller";
+import { mockRequest, mockResponse } from 'jest-mock-req-res';
+import {
+  createUser, deleteUser, getUserById, getUsers, updateUser,
+} from '../../../controllers/user.controller';
 import User from '../../../models/user.model';
 
 jest.mock('../../../models/post.model', () => ({ }));
@@ -11,10 +13,9 @@ describe('Unit test create user controller', () => {
     const res = mockResponse();
 
     User.create = jest.fn().mockResolvedValue({
-      'name': 'John Smith',
-      'email': 'jsmith@gmail.com',
+      name: 'John Smith',
+      email: 'jsmith@gmail.com',
     });
-
 
     await createUser(req, res);
 
@@ -23,8 +24,8 @@ describe('Unit test create user controller', () => {
       message: 'User created successfully',
       info: {},
       data: {
-        'name': 'John Smith',
-        'email': 'jsmith@gmail.com',
+        name: 'John Smith',
+        email: 'jsmith@gmail.com',
       },
     });
     expect(res.status).toHaveBeenCalledWith(200);
@@ -57,8 +58,8 @@ describe('Unit test get users controller', () => {
 
     User.findAll = jest.fn().mockResolvedValue([
       {
-        'name': 'John Smith',
-        'email': 'jsmith@gmail.com',
+        name: 'John Smith',
+        email: 'jsmith@gmail.com',
       },
     ]);
 
@@ -70,8 +71,8 @@ describe('Unit test get users controller', () => {
       info: {},
       data: [
         {
-          'name': 'John Smith',
-          'email': 'jsmith@gmail.com',
+          name: 'John Smith',
+          email: 'jsmith@gmail.com',
         },
       ],
     });
@@ -106,8 +107,8 @@ describe('Unit test get user by id controller', () => {
     const res = mockResponse();
 
     User.findOne = jest.fn().mockResolvedValue({
-      'name': 'Dominic Toretto',
-      'email': 'dtoretto@gmail.com',
+      name: 'Dominic Toretto',
+      email: 'dtoretto@gmail.com',
     });
 
     await getUserById(req, res);
@@ -117,12 +118,11 @@ describe('Unit test get user by id controller', () => {
       message: '',
       info: {},
       data: {
-        'name': 'Dominic Toretto',
-        'email': 'dtoretto@gmail.com',
+        name: 'Dominic Toretto',
+        email: 'dtoretto@gmail.com',
       },
     });
     expect(res.status).toHaveBeenCalledWith(200);
-
   });
 
   it('Edge case, catch error if there is an error', async () => {
@@ -168,15 +168,15 @@ describe('Unit test update user controller', () => {
     const req = mockRequest({
       params: { id: 1 },
       body: {
-        'name': 'Dominic Toretto',
-        'email': 'new-email@gmail.com',
+        name: 'Dominic Toretto',
+        email: 'new-email@gmail.com',
       },
     });
     const res = mockResponse();
 
     User.findByPk = jest.fn().mockResolvedValue({
-      'name': 'Dominic Toretto',
-      'email': 'dtoretto@gmail.com',
+      name: 'Dominic Toretto',
+      email: 'dtoretto@gmail.com',
       update: jest.fn().mockResolvedValue(true),
     });
 
@@ -237,8 +237,8 @@ describe('Unit test delete user controller', () => {
     const res = mockResponse();
 
     User.findByPk = jest.fn().mockResolvedValue({
-      'name': 'Dominic Toretto',
-      'email': 'dtoretto@gmail.com',
+      name: 'Dominic Toretto',
+      email: 'dtoretto@gmail.com',
       destroy: jest.fn().mockResolvedValue(true),
     });
 

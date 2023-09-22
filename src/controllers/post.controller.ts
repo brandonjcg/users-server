@@ -8,11 +8,10 @@ export const createPost = async (req: Request, res: Response) => {
     const { title, content, idUser } = req.body;
     const post = await Post.create({ title, content, idUser });
 
-    return sendGenericSuccess(res, { 
+    return sendGenericSuccess(res, {
       data: post,
       message: 'Post created successfully',
     });
-
   } catch (error: any) {
     return sendGenericError(res, error);
   }
@@ -21,7 +20,7 @@ export const createPost = async (req: Request, res: Response) => {
 export const getPosts = async (req: Request, res: Response) => {
   try {
     const posts = await Post.findAll();
-    
+
     return sendGenericSuccess(res, { data: posts });
   } catch (error: any) {
     return sendGenericError(res, error);
@@ -52,15 +51,14 @@ export const getPostById = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    
+
     const post = await Post.findByPk(id);
     if (!post) {
       return sendGenericSuccess(res, { message: 'Post not found' });
     }
 
-
     await post.update(req.body);
-    
+
     return sendGenericSuccess(res, {
       data: post,
       message: 'Post updated successfully',
@@ -79,7 +77,7 @@ export const deletePost = async (req: Request, res: Response) => {
     }
 
     await post.destroy();
-    
+
     return sendGenericSuccess(res, {
       data: post,
       message: 'Post deleted successfully',

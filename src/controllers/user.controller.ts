@@ -6,7 +6,7 @@ import { sendGenericError, sendGenericSuccess } from '../utils';
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const users = await User.findAll();
-    
+
     return sendGenericSuccess(res, { data: users });
   } catch (error: any) {
     return sendGenericError(res, error);
@@ -44,8 +44,8 @@ export const createUser = async (
   const { name, email } = req.body;
   try {
     const user = await User.create({ name, email });
-    
-    return sendGenericSuccess(res, { 
+
+    return sendGenericSuccess(res, {
       data: user,
       message: 'User created successfully',
     });
@@ -59,16 +59,16 @@ export const updateUser = async (
   res: Response,
 ): Promise<Response> => {
   const { id } = req.params;
-  
+
   try {
     const user = await User.findByPk(id);
     if (!user) {
       return sendGenericSuccess(res, { message: 'User not found' });
     }
-    
+
     await user.update(req.body);
-    
-    return sendGenericSuccess(res, { 
+
+    return sendGenericSuccess(res, {
       data: user,
       message: 'User updated successfully',
     });
@@ -88,8 +88,8 @@ export const deleteUser = async (
       return sendGenericSuccess(res, { message: 'User not found' });
     }
     await user.destroy();
-    
-    return sendGenericSuccess(res, { 
+
+    return sendGenericSuccess(res, {
       data: user,
       message: 'User deleted successfully',
     });

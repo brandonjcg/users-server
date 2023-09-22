@@ -8,7 +8,9 @@ type TypeResponse = {
 };
 
 const sendGenericSuccess = (res: Response, optionals: Partial<TypeResponse> = {}) : Response => {
-  const { error = false, message = '', data, info } = optionals;
+  const {
+    error = false, message = '', data, info,
+  } = optionals;
 
   return res.status(200).json({
     error,
@@ -24,7 +26,9 @@ const sendGenericError = (res: Response, optionals : TypeResponse = {
   info: {},
   error: true,
 }) : Response => {
-  const { error = true, message, data, info} = optionals;
+  const {
+    error = true, message, data, info,
+  } = optionals;
 
   return res.status(500).json({
     error,
