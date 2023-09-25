@@ -1,6 +1,3 @@
-import {
-    describe, expect, it,
-} from '@jest/globals';
 import { mockResponse } from 'jest-mock-req-res';
 import { TypeResponse, sendGenericError, sendGenericSuccess } from '../../utils';
 

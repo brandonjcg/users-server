@@ -1,12 +1,17 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
-import sequelize from '../config/sequelize.config';
+import sequelizeConfig from '../config/sequelize.config';
 
-export class User extends Model {
+class User extends Model {
   public id!: number;
+
   public name!: string;
+
   public email!: string;
+
   public active!: boolean;
+
   public readonly createdAt!: Date;
+
   public readonly updatedAt!: Date;
 
   static initialize(sequelize: Sequelize) {
@@ -63,6 +68,6 @@ export class User extends Model {
   }
 }
 
-User.initialize(sequelize);
+User.initialize(sequelizeConfig);
 
 export default User;
