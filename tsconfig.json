@@ -17,7 +17,8 @@
     "include": [
         "src/**/*",
         "jest.config.ts",
-        "babel.config.js"
+        "babel.config.js",
+        "commitlint.config.js",
     ],
     "exclude": [
         "node_modules",
