@@ -1,11 +1,16 @@
 import { Request, Response } from 'express';
 import Post from '../models/post.model';
 import User from '../models/user.model';
-import { sendGenericError, sendGenericSuccess } from '../utils';
+import { buildPagination, sendGenericError, sendGenericSuccess } from '../utils';
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const users = await User.findAll();
+    const { results, page } = req.query;
+    const { offset, limit } = buildPagination(Number(page), Number(results));
+    const users = await User.findAll({
+      offset,
+      limit,
+    });
 
     return sendGenericSuccess(res, { data: users });
   } catch (error: any) {
