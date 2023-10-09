@@ -56,19 +56,26 @@ describe('Unit test get users controller', () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    User.findAll = jest.fn().mockResolvedValue([
-      {
-        name: 'John Smith',
-        email: 'jsmith@gmail.com',
-      },
-    ]);
+    User.findAndCountAll = jest.fn().mockResolvedValue({
+      rows: [
+        {
+          name: 'John Smith',
+          email: 'jsmith@gmail.com',
+        },
+      ],
+      count: 1,
+    });
 
     await getUsers(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
       message: '',
-      info: {},
+      info: {
+        page: 1,
+        results: 10,
+        total: 1,
+      },
       data: [
         {
           name: 'John Smith',
@@ -83,7 +90,7 @@ describe('Unit test get users controller', () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    User.findAll = jest.fn().mockRejectedValue({
+    User.findAndCountAll = jest.fn().mockRejectedValue({
       message: 'Error creating user',
     });
 
@@ -100,7 +107,7 @@ describe('Unit test get users controller', () => {
 });
 
 describe('Unit test get user by id controller', () => {
-  it('Happy path, return success response', async () => {
+  it('Happy path, return all user data', async () => {
     const req = mockRequest({
       params: { id: 1 },
     });

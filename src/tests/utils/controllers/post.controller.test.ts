@@ -12,7 +12,7 @@ jest.mock('../../../models/post.model', () => ({}));
 jest.mock('../../../models/user.model', () => ({}));
 
 describe('Unit test create post controller', () => {
-  it('Happy path, return success response', async () => {
+  it('Happy path, return created post', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
@@ -37,7 +37,7 @@ describe('Unit test create post controller', () => {
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, catch error if there is an error', async () => {
+  it('Edge case, catch error in create post', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
@@ -58,24 +58,31 @@ describe('Unit test create post controller', () => {
 });
 
 describe('Unit test get posts controller', () => {
-  it('Happy path, return success response', async () => {
+  it('Happy path, return rows of posts', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.findAll = jest.fn().mockResolvedValue([
-      {
-        title: 'First post',
-        content: 'Main description',
-        idUser: 1,
-      },
-    ]);
+    Post.findAndCountAll = jest.fn().mockResolvedValue({
+      rows: [
+        {
+          title: 'First post',
+          content: 'Main description',
+          idUser: 1,
+        },
+      ],
+      count: 1,
+    });
 
     await getPosts(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
       message: '',
-      info: {},
+      info: {
+        page: 1,
+        results: 10,
+        total: 1,
+      },
       data: [
         {
           title: 'First post',
@@ -91,7 +98,7 @@ describe('Unit test get posts controller', () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.findAll = jest.fn().mockRejectedValue({
+    Post.findAndCountAll = jest.fn().mockRejectedValue({
       message: 'Error creating post',
     });
 
