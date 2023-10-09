@@ -1,13 +1,16 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
-type TypeResponse = {
+export type TypeResponse = {
   error: boolean,
   message: string,
   data?: object | null
   info?: object | null
 };
 
-const sendGenericSuccess = (res: Response, optionals: Partial<TypeResponse> = {}) : Response => {
+export const sendGenericSuccess = (
+  res: Response,
+  optionals: Partial<TypeResponse> = {},
+) : Response => {
   const {
     error = false, message = '', data, info,
   } = optionals;
@@ -20,7 +23,7 @@ const sendGenericSuccess = (res: Response, optionals: Partial<TypeResponse> = {}
   });
 };
 
-const sendGenericError = (res: Response, optionals : TypeResponse = {
+export const sendGenericError = (res: Response, optionals : TypeResponse = {
   message: '',
   data: {},
   info: {},
@@ -38,4 +41,12 @@ const sendGenericError = (res: Response, optionals : TypeResponse = {
   });
 };
 
-export { TypeResponse, sendGenericError, sendGenericSuccess };
+export const getResultsAndPageFromQuery = (req: Request) => {
+  const page = Number(req.query.page) || 1;
+  const results = Number(req.query.results) || 10;
+
+  return {
+    page,
+    results,
+  };
+};

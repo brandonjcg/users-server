@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import Post from '../models/post.model';
 import User from '../models/user.model';
-import { sendGenericError, sendGenericSuccess } from '../utils';
+import {
+  buildPagination, getResultsAndPageFromQuery, sendGenericError,
+  sendGenericSuccess,
+} from '../utils';
 
 export const createPost = async (req: Request, res: Response) => {
   try {
@@ -19,9 +22,21 @@ export const createPost = async (req: Request, res: Response) => {
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await Post.findAll();
+    const { page, results } = getResultsAndPageFromQuery(req);
+    const { offset, limit } = buildPagination(page, results);
+    const data = await Post.findAndCountAll({
+      offset,
+      limit,
+    });
 
-    return sendGenericSuccess(res, { data: posts });
+    return sendGenericSuccess(res, {
+      data: data.rows,
+      info: {
+        page,
+        results: limit,
+        total: data.count,
+      },
+    });
   } catch (error: any) {
     return sendGenericError(res, error);
   }

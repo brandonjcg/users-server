@@ -1,5 +1,7 @@
-import { mockResponse } from 'jest-mock-req-res';
-import { TypeResponse, sendGenericError, sendGenericSuccess } from '../../utils';
+import { mockRequest, mockResponse } from 'jest-mock-req-res';
+import {
+  TypeResponse, getResultsAndPageFromQuery, sendGenericError, sendGenericSuccess,
+} from '../../utils';
 
 describe('Unit test sendGenericSuccess fn', () => {
   it('Happy path, return success response', () => {
@@ -64,5 +66,32 @@ describe('Unit test sendGenericError fn', () => {
       data: {},
     });
     expect(res.status).toHaveBeenCalledWith(500);
+  });
+});
+
+describe('Unit test getResultsAndPageFromQuery fn', () => {
+  it('Happy path, should return object with page and results', () => {
+    const req = mockRequest({
+      query: {
+        page: 1,
+        results: 10,
+      },
+    });
+    const result = getResultsAndPageFromQuery(req);
+
+    expect(result).toEqual({
+      page: 1,
+      results: 10,
+    });
+  });
+
+  it('Edge case, should return default values', () => {
+    const req = mockRequest();
+    const result = getResultsAndPageFromQuery(req);
+
+    expect(result).toEqual({
+      page: 1,
+      results: 10,
+    });
   });
 });
