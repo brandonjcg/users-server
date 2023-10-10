@@ -1,3 +1,6 @@
+import { Request } from 'express';
+import { WhereOptions } from 'sequelize';
+
 const PAGINATION_LIMIT = 10;
 
 export const getModels = (
@@ -15,4 +18,18 @@ export const buildPagination = (
     offset,
     limit,
   };
+};
+
+export const buildFilters = (query: Request['query'] = {}): WhereOptions => {
+  const filters: WhereOptions = {};
+
+  const queryKeys = Object.keys(query);
+
+  queryKeys.forEach((key) => {
+    if (['page', 'results'].includes(key)) return;
+
+    filters[`$${key}$`] = query[key];
+  });
+
+  return filters;
 };
