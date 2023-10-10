@@ -1,55 +1,49 @@
 import { mockRequest, mockResponse } from 'jest-mock-req-res';
 import {
-  createPost,
-  deletePost,
-  getPostById,
-  getPosts,
-  updatePost,
-} from '../../../controllers/post.controller';
-import Post from '../../../models/post.model';
+  createUser, deleteUser, getUserById, getUsers, updateUser,
+} from '../../controllers/user.controller';
+import User from '../../models/user.model';
 
-jest.mock('../../../models/post.model', () => ({}));
-jest.mock('../../../models/user.model', () => ({}));
+jest.mock('../../models/post.model', () => ({ }));
+jest.mock('../../models/user.model', () => ({ }));
 
-describe('Unit test create post controller', () => {
-  it('Happy path, return created post', async () => {
+describe('Unit test create user controller', () => {
+  it('Happy path, return success response', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.create = jest.fn().mockResolvedValue({
-      title: 'First post',
-      content: 'Main description',
-      idUser: 1,
+    User.create = jest.fn().mockResolvedValue({
+      name: 'John Smith',
+      email: 'jsmith@gmail.com',
     });
 
-    await createPost(req, res);
+    await createUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
-      message: 'Post created successfully',
+      message: 'User created successfully',
       info: {},
       data: {
-        title: 'First post',
-        content: 'Main description',
-        idUser: 1,
+        name: 'John Smith',
+        email: 'jsmith@gmail.com',
       },
     });
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, catch error in create post', async () => {
+  it('Edge case, catch error if there is an error', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.create = jest.fn().mockRejectedValue({
-      message: 'Error creating post',
+    User.create = jest.fn().mockRejectedValue({
+      message: 'Error creating user',
     });
 
-    await createPost(req, res);
+    await createUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
-      message: 'Error creating post',
+      message: 'Error creating user',
       info: {},
       data: {},
     });
@@ -57,23 +51,22 @@ describe('Unit test create post controller', () => {
   });
 });
 
-describe('Unit test get posts controller', () => {
-  it('Happy path, return rows of posts', async () => {
+describe('Unit test get users controller', () => {
+  it('Happy path, return success response', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.findAndCountAll = jest.fn().mockResolvedValue({
+    User.findAndCountAll = jest.fn().mockResolvedValue({
       rows: [
         {
-          title: 'First post',
-          content: 'Main description',
-          idUser: 1,
+          name: 'John Smith',
+          email: 'jsmith@gmail.com',
         },
       ],
       count: 1,
     });
 
-    await getPosts(req, res);
+    await getUsers(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
@@ -85,9 +78,8 @@ describe('Unit test get posts controller', () => {
       },
       data: [
         {
-          title: 'First post',
-          content: 'Main description',
-          idUser: 1,
+          name: 'John Smith',
+          email: 'jsmith@gmail.com',
         },
       ],
     });
@@ -98,15 +90,15 @@ describe('Unit test get posts controller', () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.findAndCountAll = jest.fn().mockRejectedValue({
-      message: 'Error creating post',
+    User.findAndCountAll = jest.fn().mockRejectedValue({
+      message: 'Error creating user',
     });
 
-    await getPosts(req, res);
+    await getUsers(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
-      message: 'Error creating post',
+      message: 'Error creating user',
       info: {},
       data: {},
     });
@@ -114,29 +106,27 @@ describe('Unit test get posts controller', () => {
   });
 });
 
-describe('Unit test get post by id controller', () => {
-  it('Happy path, return success response', async () => {
+describe('Unit test get user by id controller', () => {
+  it('Happy path, return all user data', async () => {
     const req = mockRequest({
       params: { id: 1 },
     });
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockResolvedValue({
-      title: 'First post',
-      content: 'Main description',
-      idUser: 1,
+    User.findOne = jest.fn().mockResolvedValue({
+      name: 'Dominic Toretto',
+      email: 'dtoretto@gmail.com',
     });
 
-    await getPostById(req, res);
+    await getUserById(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
       message: '',
       info: {},
       data: {
-        title: 'First post',
-        content: 'Main description',
-        idUser: 1,
+        name: 'Dominic Toretto',
+        email: 'dtoretto@gmail.com',
       },
     });
     expect(res.status).toHaveBeenCalledWith(200);
@@ -146,83 +136,81 @@ describe('Unit test get post by id controller', () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockRejectedValue({
-      message: 'Error creating post',
+    User.findOne = jest.fn().mockRejectedValue({
+      message: 'Error creating user',
     });
 
-    await getPostById(req, res);
+    await getUserById(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
-      message: 'Error creating post',
+      message: 'Error creating user',
       info: {},
       data: {},
     });
     expect(res.status).toHaveBeenCalledWith(500);
   });
 
-  it('Edge case, post not found', async () => {
+  it('Edge case, user not found', async () => {
     const req = mockRequest({
       params: { id: 1 },
     });
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockResolvedValue(null);
+    User.findOne = jest.fn().mockResolvedValue(null);
 
-    await getPostById(req, res);
+    await getUserById(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
-      message: 'Post not found',
+      message: 'User not found',
       info: {},
       data: {},
     });
   });
 });
 
-describe('Unit test update post controller', () => {
+describe('Unit test update user controller', () => {
   it('Happy path, return success response', async () => {
     const req = mockRequest({
       params: { id: 1 },
       body: {
-        title: 'First post',
-        content: 'New description',
-        idUser: 1,
+        name: 'Dominic Toretto',
+        email: 'new-email@gmail.com',
       },
     });
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockResolvedValue({
-      title: 'First post',
-      content: 'Main description',
-      idUser: 1,
+    User.findByPk = jest.fn().mockResolvedValue({
+      name: 'Dominic Toretto',
+      email: 'dtoretto@gmail.com',
       update: jest.fn().mockResolvedValue(true),
     });
 
-    await updatePost(req, res);
+    await updateUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
-      message: 'Post updated successfully',
+      message: 'User updated successfully',
       info: {},
       data: expect.any(Object),
     });
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, post not found', async () => {
+  it('Edge case, user not found', async () => {
     const req = mockRequest({
       params: { id: 1 },
     });
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockResolvedValue(null);
+    User.findByPk = jest.fn().mockResolvedValue(null);
 
-    await updatePost(req, res);
+    await updateUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
-      message: 'Post not found',
+      message: 'User not found',
       info: {},
       data: {},
     });
@@ -232,11 +220,11 @@ describe('Unit test update post controller', () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockRejectedValue({
+    User.findByPk = jest.fn().mockRejectedValue({
       message: 'Error in update',
     });
 
-    await updatePost(req, res);
+    await updateUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
@@ -248,44 +236,43 @@ describe('Unit test update post controller', () => {
   });
 });
 
-describe('Unit test delete post controller', () => {
+describe('Unit test delete user controller', () => {
   it('Happy path, return success response', async () => {
     const req = mockRequest({
       params: { id: 1 },
     });
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockResolvedValue({
-      title: 'First post',
-      content: 'Main description',
-      idUser: 1,
+    User.findByPk = jest.fn().mockResolvedValue({
+      name: 'Dominic Toretto',
+      email: 'dtoretto@gmail.com',
       destroy: jest.fn().mockResolvedValue(true),
     });
 
-    await deletePost(req, res);
+    await deleteUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
-      message: 'Post deleted successfully',
+      message: 'User deleted successfully',
       info: {},
       data: expect.any(Object),
     });
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, post not found', async () => {
+  it('Edge case, user not found', async () => {
     const req = mockRequest({
       params: { id: 1 },
     });
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockResolvedValue(null);
+    User.findByPk = jest.fn().mockResolvedValue(null);
 
-    await deletePost(req, res);
+    await deleteUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
-      message: 'Post not found',
+      message: 'User not found',
       info: {},
       data: {},
     });
@@ -295,11 +282,11 @@ describe('Unit test delete post controller', () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    Post.findByPk = jest.fn().mockRejectedValue({
+    User.findByPk = jest.fn().mockRejectedValue({
       message: 'Error in delete',
     });
 
-    await deletePost(req, res);
+    await deleteUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
