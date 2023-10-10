@@ -2,17 +2,20 @@ import { Request, Response } from 'express';
 import Post from '../models/post.model';
 import User from '../models/user.model';
 import {
-  buildPagination, getResultsAndPageFromQuery, sendGenericError,
-  sendGenericSuccess,
+  buildFilters, buildPagination, getResultsAndPageFromQuery,
+  sendGenericError, sendGenericSuccess,
 } from '../utils';
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { page, results } = getResultsAndPageFromQuery(req);
     const { offset, limit } = buildPagination(page, results);
+    const where = buildFilters(req.query);
+
     const data = await User.findAndCountAll({
       offset,
       limit,
+      where,
     });
 
     return sendGenericSuccess(res, {
