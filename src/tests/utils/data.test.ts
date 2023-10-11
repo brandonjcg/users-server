@@ -1,4 +1,5 @@
-import { buildPagination, getModels } from '../../utils';
+import { mockRequest } from 'jest-mock-req-res';
+import { buildFilters, buildPagination, getModels } from '../../utils';
 
 describe('Unit test getModels fn', () => {
   it('Should return an array of strings, without index.ts', () => {
@@ -49,6 +50,33 @@ describe('Unit test buildPagination fn', () => {
       offset: 0,
       limit: 10,
     };
+
+    expect(result).toEqual(expected);
+  });
+});
+
+describe('Unit test buildFilters fn', () => {
+  it('Should return an object with filters', () => {
+    const req = mockRequest({
+      query: {
+        'user.email': 'user_one@gmail.com',
+        page: 1,
+        results: 10,
+      },
+    });
+    const result = buildFilters(req.query);
+
+    const expected = {
+      '$user.email$': 'user_one@gmail.com',
+    };
+
+    expect(result).toEqual(expected);
+  });
+
+  it('Should return empty object filters, if missing params', () => {
+    const result = buildFilters();
+
+    const expected = {};
 
     expect(result).toEqual(expected);
   });

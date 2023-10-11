@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import Post from '../models/post.model';
 import User from '../models/user.model';
 import {
-  buildPagination, getResultsAndPageFromQuery, sendGenericError,
-  sendGenericSuccess,
+  buildFilters, buildPagination, getResultsAndPageFromQuery,
+  sendGenericError, sendGenericSuccess,
 } from '../utils';
 
 export const createPost = async (req: Request, res: Response) => {
@@ -24,9 +24,12 @@ export const getPosts = async (req: Request, res: Response) => {
   try {
     const { page, results } = getResultsAndPageFromQuery(req);
     const { offset, limit } = buildPagination(page, results);
+    const where = buildFilters(req.query);
+
     const data = await Post.findAndCountAll({
       offset,
       limit,
+      where,
     });
 
     return sendGenericSuccess(res, {
