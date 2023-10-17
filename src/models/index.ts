@@ -11,10 +11,7 @@ const getModel = async (file: string) => {
   return module.default;
 };
 
-const promises = getModels(modelFiles).map(async (file) => {
-  const model = getModel(file);
-  return model;
-});
+const promises = getModels(modelFiles).map(async (file) => getModel(file));
 
 Promise.all(promises).then((models) => {
   models.forEach((model) => {

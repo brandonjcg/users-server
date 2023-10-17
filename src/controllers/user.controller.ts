@@ -6,6 +6,10 @@ import {
   sendGenericError, sendGenericSuccess,
 } from '../utils';
 
+export const userMessages = {
+  notFound: 'User not found',
+};
+
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { page, results } = getResultsAndPageFromQuery(req);
@@ -47,7 +51,7 @@ export const getUserById = async (
       ],
     });
     if (!user) {
-      return sendGenericSuccess(res, { message: 'User not found' });
+      return sendGenericSuccess(res, { message: userMessages.notFound });
     }
     return sendGenericSuccess(res, { data: user });
   } catch (error: any) {
@@ -81,7 +85,7 @@ export const updateUser = async (
   try {
     const user = await User.findByPk(id);
     if (!user) {
-      return sendGenericSuccess(res, { message: 'User not found' });
+      return sendGenericSuccess(res, { message: userMessages.notFound });
     }
 
     await user.update(req.body);
@@ -103,7 +107,7 @@ export const deleteUser = async (
   try {
     const user = await User.findByPk(id);
     if (!user) {
-      return sendGenericSuccess(res, { message: 'User not found' });
+      return sendGenericSuccess(res, { message: userMessages.notFound });
     }
     await user.destroy();
 

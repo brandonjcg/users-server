@@ -1,21 +1,26 @@
 import { mockRequest, mockResponse } from 'jest-mock-req-res';
 import {
   createUser, deleteUser, getUserById, getUsers, updateUser,
+  userMessages,
 } from '../../controllers/user.controller';
 import User from '../../models/user.model';
 
 jest.mock('../../models/post.model', () => ({ }));
 jest.mock('../../models/user.model', () => ({ }));
 
+const errorUser = 'Error creating user';
+
 describe('Unit test create user controller', () => {
-  it('Happy path, return success response', async () => {
+  it('Happy path, return success response of user', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
-    User.create = jest.fn().mockResolvedValue({
-      name: 'John Smith',
-      email: 'jsmith@gmail.com',
-    });
+    const user = {
+      name: 'Pepe Perez',
+      email: 'jperez@gmail.com',
+    };
+
+    User.create = jest.fn().mockResolvedValue(user);
 
     await createUser(req, res);
 
@@ -23,27 +28,24 @@ describe('Unit test create user controller', () => {
       error: false,
       message: 'User created successfully',
       info: {},
-      data: {
-        name: 'John Smith',
-        email: 'jsmith@gmail.com',
-      },
+      data: user,
     });
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, catch error if there is an error', async () => {
+  it('Edge case, catch error if there is an error in create user', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
     User.create = jest.fn().mockRejectedValue({
-      message: 'Error creating user',
+      message: errorUser,
     });
 
     await createUser(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
-      message: 'Error creating user',
+      message: errorUser,
       info: {},
       data: {},
     });
@@ -52,7 +54,7 @@ describe('Unit test create user controller', () => {
 });
 
 describe('Unit test get users controller', () => {
-  it('Happy path, return success response', async () => {
+  it('Happy path, return success response of users', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
@@ -86,19 +88,19 @@ describe('Unit test get users controller', () => {
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, catch error if there is an error', async () => {
+  it('Edge case, catch error if there is an error in get users', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
     User.findAndCountAll = jest.fn().mockRejectedValue({
-      message: 'Error creating user',
+      message: errorUser,
     });
 
     await getUsers(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
-      message: 'Error creating user',
+      message: errorUser,
       info: {},
       data: {},
     });
@@ -112,11 +114,11 @@ describe('Unit test get user by id controller', () => {
       params: { id: 1 },
     });
     const res = mockResponse();
-
-    User.findOne = jest.fn().mockResolvedValue({
-      name: 'Dominic Toretto',
-      email: 'dtoretto@gmail.com',
-    });
+    const user = {
+      name: 'Brian O\'Conner',
+      email: 'boconner@gmail.com',
+    };
+    User.findOne = jest.fn().mockResolvedValue(user);
 
     await getUserById(req, res);
 
@@ -124,27 +126,24 @@ describe('Unit test get user by id controller', () => {
       error: false,
       message: '',
       info: {},
-      data: {
-        name: 'Dominic Toretto',
-        email: 'dtoretto@gmail.com',
-      },
+      data: user,
     });
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, catch error if there is an error', async () => {
+  it('Edge case, catch error if there is an error in get user by id', async () => {
     const req = mockRequest();
     const res = mockResponse();
 
     User.findOne = jest.fn().mockRejectedValue({
-      message: 'Error creating user',
+      message: errorUser,
     });
 
     await getUserById(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
       error: true,
-      message: 'Error creating user',
+      message: errorUser,
       info: {},
       data: {},
     });
@@ -163,7 +162,7 @@ describe('Unit test get user by id controller', () => {
 
     expect(res.json).toHaveBeenCalledWith({
       error: false,
-      message: 'User not found',
+      message: userMessages.notFound,
       info: {},
       data: {},
     });
@@ -175,14 +174,14 @@ describe('Unit test update user controller', () => {
     const req = mockRequest({
       params: { id: 1 },
       body: {
-        name: 'Dominic Toretto',
+        name: 'Juan Smith',
         email: 'new-email@gmail.com',
       },
     });
     const res = mockResponse();
 
     User.findByPk = jest.fn().mockResolvedValue({
-      name: 'Dominic Toretto',
+      name: 'Juan Smith',
       email: 'dtoretto@gmail.com',
       update: jest.fn().mockResolvedValue(true),
     });
@@ -198,7 +197,7 @@ describe('Unit test update user controller', () => {
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('Edge case, user not found', async () => {
+  it('Edge case, try update user, but user not found', async () => {
     const req = mockRequest({
       params: { id: 1 },
     });
