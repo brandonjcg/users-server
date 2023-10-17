@@ -1,5 +1,6 @@
 {
     "extends": [
+        "prettier",
         "airbnb-base",
         "airbnb-typescript/base",
         "plugin:sonarjs/recommended"
