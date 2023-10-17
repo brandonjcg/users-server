@@ -23,7 +23,8 @@
     "express": "4.18.2",
     "jest-mock-req-res": "1.0.2",
     "mysql2": "3.6.1",
-    "sequelize": "6.33.0"
+    "sequelize": "6.33.0",
+    "swagger-ui-express": "5.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "7.22.20",
@@ -33,6 +34,7 @@
     "@types/cors": "2.8.14",
     "@types/jest": "29.5.5",
     "@types/sequelize": "4.28.15",
+    "@types/swagger-ui-express": "4.1.4",
     "@typescript-eslint/eslint-plugin": "6.7.2",
     "@typescript-eslint/parser": "6.4.0",
     "eslint": "8.49.0",
