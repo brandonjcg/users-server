@@ -6,6 +6,10 @@ import {
   sendGenericError, sendGenericSuccess,
 } from '../utils';
 
+export const postMessages = {
+  notFound: 'Post not found',
+};
+
 export const createPost = async (req: Request, res: Response) => {
   try {
     const { title, content, idUser } = req.body;
@@ -58,7 +62,7 @@ export const getPostById = async (req: Request, res: Response) => {
     });
 
     if (!post) {
-      return sendGenericSuccess(res, { message: 'Post not found' });
+      return sendGenericSuccess(res, { message: postMessages.notFound });
     }
     return sendGenericSuccess(res, { data: post });
   } catch (error: any) {
@@ -72,7 +76,7 @@ export const updatePost = async (req: Request, res: Response) => {
 
     const post = await Post.findByPk(id);
     if (!post) {
-      return sendGenericSuccess(res, { message: 'Post not found' });
+      return sendGenericSuccess(res, { message: postMessages.notFound });
     }
 
     await post.update(req.body);
@@ -91,7 +95,7 @@ export const deletePost = async (req: Request, res: Response) => {
     const { id } = req.params;
     const post = await Post.findByPk(id);
     if (!post) {
-      return sendGenericSuccess(res, { message: 'Post not found' });
+      return sendGenericSuccess(res, { message: postMessages.notFound });
     }
 
     await post.destroy();
