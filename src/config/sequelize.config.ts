@@ -18,6 +18,7 @@ const sequelize = new Sequelize(database, user, password, {
   define: {
     paranoid: true,
   },
+  timezone: '-07:00',
 });
 
 export default sequelize;

@@ -45,11 +45,6 @@ class User extends Model {
           type: DataTypes.DATE,
           allowNull: true,
         },
-        active: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: true,
-        },
       },
       {
         tableName: 'users',

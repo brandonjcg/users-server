@@ -20,7 +20,7 @@ Promise.all(promises).then((models) => {
     }
   });
 }).then(() => {
-  if (process.env.ENVIROMENT === 'dev') instanceSequelize.sync();
+  if (process.env.ENVIROMENT === 'dev') instanceSequelize.sync({ alter: true });
 });
 
 export default instanceSequelize;
