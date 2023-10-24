@@ -16,6 +16,8 @@ class Post extends Model {
 
   public readonly updatedAt!: Date;
 
+  public readonly deletedAt!: Date;
+
   static initialize(sequelize: Sequelize) {
     this.init(
       {
