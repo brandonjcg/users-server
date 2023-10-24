@@ -16,6 +16,8 @@ class Post extends Model {
 
   public readonly updatedAt!: Date;
 
+  public readonly deletedAt!: Date;
+
   static initialize(sequelize: Sequelize) {
     this.init(
       {
@@ -49,11 +51,6 @@ class Post extends Model {
         deletedAt: {
           type: DataTypes.DATE,
           allowNull: true,
-        },
-        active: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: true,
         },
       },
       {

@@ -1,4 +1,6 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  DataTypes, Model, Sequelize,
+} from 'sequelize';
 import sequelizeConfig from '../config/sequelize.config';
 
 class User extends Model {
@@ -13,6 +15,8 @@ class User extends Model {
   public readonly createdAt!: Date;
 
   public readonly updatedAt!: Date;
+
+  public readonly deletedAt!: Date;
 
   static initialize(sequelize: Sequelize) {
     this.init(
@@ -29,7 +33,6 @@ class User extends Model {
         email: {
           type: new DataTypes.STRING(128),
           allowNull: false,
-          unique: true,
         },
         createdAt: {
           type: DataTypes.DATE,
@@ -44,11 +47,6 @@ class User extends Model {
         deletedAt: {
           type: DataTypes.DATE,
           allowNull: true,
-        },
-        active: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: true,
         },
       },
       {
