@@ -34,15 +34,19 @@ class User extends Model {
           type: new DataTypes.STRING(128),
           allowNull: false,
         },
+        idRole: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
         createdAt: {
           type: DataTypes.DATE,
           allowNull: false,
-          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+          defaultValue: new Date(),
         },
         updatedAt: {
           type: DataTypes.DATE,
           allowNull: false,
-          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+          defaultValue: new Date(),
         },
         deletedAt: {
           type: DataTypes.DATE,
@@ -62,6 +66,13 @@ class User extends Model {
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT',
       as: 'posts',
+    });
+
+    User.belongsTo(models.Role, {
+      foreignKey: 'idRole',
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+      as: 'role',
     });
   }
 }
