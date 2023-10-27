@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Post from '../models/post.model';
+import Role from '../models/role.model';
 import User from '../models/user.model';
 import {
   buildFilters, buildPagination, getResultsAndPageFromQuery,
@@ -48,6 +49,10 @@ export const getUserById = async (
           model: Post,
           as: 'posts',
         },
+        {
+          model: Role,
+          as: 'role',
+        },
       ],
     });
     if (!user) {
@@ -63,9 +68,8 @@ export const createUser = async (
   req: Request,
   res: Response,
 ): Promise<Response> => {
-  const { name, email } = req.body;
   try {
-    const user = await User.create({ name, email });
+    const user = await User.create(req.body);
 
     return sendGenericSuccess(res, {
       data: user,

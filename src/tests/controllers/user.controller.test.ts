@@ -7,6 +7,7 @@ import User from '../../models/user.model';
 
 jest.mock('../../models/post.model', () => ({ }));
 jest.mock('../../models/user.model', () => ({ }));
+jest.mock('../../models/role.model', () => ({ }));
 
 const errorUser = 'Error creating user';
 

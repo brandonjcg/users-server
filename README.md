@@ -40,6 +40,7 @@ DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=password
 DB_PORT=3306
+DB_SYNC=false|true
 ```
 
 4. Create a MySQL database named `users`
@@ -61,6 +62,14 @@ The project includes the following routes:
 - `POST /posts`: Create a new post
 - `PUT /posts/:id`: Update a post by id
 - `DELETE /posts/:id`: Delete a post by id
+
+## Sedders
+
+The project includes seeders for the `Roles`. To run the seeders, run the following command:
+
+```
+npx tsc -p . && npx sequelize-cli db:seed:all --url 'mysql://user:password@localhost/database'
+```
 
 ## License
 
