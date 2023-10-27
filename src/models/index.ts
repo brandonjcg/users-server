@@ -20,7 +20,7 @@ Promise.all(promises).then((models) => {
     }
   });
 }).then(() => {
-  if (process.env.BD_SYNC === 'true') instanceSequelize.sync({ alter: true });
+  if (process.env.DB_SYNC === 'true') instanceSequelize.sync({ alter: true });
 });
 
 export default instanceSequelize;

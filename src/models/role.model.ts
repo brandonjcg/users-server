@@ -1,16 +1,10 @@
-import {
-  DataTypes, Model, Sequelize,
-} from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import sequelizeConfig from '../config/sequelize.config';
 
-class User extends Model {
+class Role extends Model {
   public id!: number;
 
   public name!: string;
-
-  public email!: string;
-
-  public active!: boolean;
 
   public readonly createdAt!: Date;
 
@@ -30,14 +24,6 @@ class User extends Model {
           type: new DataTypes.STRING(128),
           allowNull: false,
         },
-        email: {
-          type: new DataTypes.STRING(128),
-          allowNull: false,
-        },
-        idRole: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
         createdAt: {
           type: DataTypes.DATE,
           allowNull: false,
@@ -54,29 +40,13 @@ class User extends Model {
         },
       },
       {
-        tableName: 'users',
+        tableName: 'roles',
         sequelize,
       },
     );
   }
-
-  static associate(models: any) {
-    User.hasMany(models.Post, {
-      foreignKey: 'idUser',
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
-      as: 'posts',
-    });
-
-    User.belongsTo(models.Role, {
-      foreignKey: 'idRole',
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
-      as: 'role',
-    });
-  }
 }
 
-User.initialize(sequelizeConfig);
+Role.initialize(sequelizeConfig);
 
-export default User;
+export default Role;
