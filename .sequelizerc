@@ -2,4 +2,5 @@ const path = require('path');
 
 module.exports = {
   'models-path': 'src/models',
+  'seeders-path': './dist/src/seeders',
 };
