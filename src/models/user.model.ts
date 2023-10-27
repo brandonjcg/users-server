@@ -2,6 +2,7 @@ import {
   DataTypes, Model, Sequelize,
 } from 'sequelize';
 import sequelizeConfig from '../config/sequelize.config';
+import { seederRoles } from '../seeders/20231026192557-role';
 
 class User extends Model {
   public id!: number;
@@ -37,6 +38,7 @@ class User extends Model {
         idRole: {
           type: DataTypes.INTEGER,
           allowNull: false,
+          defaultValue: seederRoles[0].id,
         },
         createdAt: {
           type: DataTypes.DATE,
