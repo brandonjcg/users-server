@@ -27,12 +27,12 @@ class Role extends Model {
         createdAt: {
           type: DataTypes.DATE,
           allowNull: false,
-          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+          defaultValue: new Date(),
         },
         updatedAt: {
           type: DataTypes.DATE,
           allowNull: false,
-          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+          defaultValue: new Date(),
         },
         deletedAt: {
           type: DataTypes.DATE,
