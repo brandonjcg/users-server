@@ -13,6 +13,7 @@
         "id",
         "name",
         "email",
+        "idRole",
         "createdAt",
         "updatedAt"
       ],
@@ -28,6 +29,10 @@
         "email": {
           "type": "string",
           "description": "User email"
+        },
+        "idRole": {
+          "type": "number",
+          "description": "Role id"
         },
         "createdAt": {
           "type": "string",
@@ -144,6 +149,9 @@
                       "email": {
                         "type": "string"
                       },
+                      "idRole": {
+                        "type": "number"
+                      },
                       "createdAt": {
                         "type": "string",
                         "format": "date-time"
@@ -232,6 +240,9 @@
                     },
                     "email": {
                       "type": "string"
+                    },
+                    "idRole": {
+                      "type": "number"
                     },
                     "createdAt": {
                       "type": "string",
